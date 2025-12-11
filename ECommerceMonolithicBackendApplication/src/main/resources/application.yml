@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: MonolithicBackend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/e-commerce-monolithicdb
+    driver-class-name: org.postgresql.Driver
+    username: hemanth
+    password: hemanth
+    hikari:
+      connection-init-sql: SET TIME ZONE 'Asia/Kolkata';  # This ensures every connection uses correct timezone
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: Asia/Kolkata   # IMPORTANT: Hibernate will use this timezone
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: MonolithicBackend
+    description: Monolithic Backend Application for E-Commerce Project
+    version: 1.0.0
