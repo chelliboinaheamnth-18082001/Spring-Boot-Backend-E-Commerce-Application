@@ -1,0 +1,26 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: SpringCloud_ConfigServer
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/chelliboinaheamnth-18082001/SpringBoot-Microservices_E-Commerce_Configurations
+          default-label: main   # ? Important: use 'main' instead of 'master'
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

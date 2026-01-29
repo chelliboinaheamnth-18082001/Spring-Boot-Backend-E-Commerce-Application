@@ -1,17 +1,24 @@
 package com.example.cart_order_service.Services.CartItemServices;
 
-
 import com.example.cart_order_service.DTOs.CartItemDTOs.CartItemRequestDTO;
 import com.example.cart_order_service.DTOs.CartItemDTOs.CartItemsResponseDTO;
+import com.example.cart_order_service.DTOs.ProductsDTOs.ProductResponseDTO;
+import com.example.cart_order_service.DTOs.UserDTOs.UserResponseDTO;
 import com.example.cart_order_service.Entites.CartItem;
 import com.example.cart_order_service.ExceptionHandlers.CartExceptionHandler.CartItemNotFoundException;
+import com.example.cart_order_service.ExceptionHandlers.ProductRelatedExceptions.ProductNotFoundException;
+import com.example.cart_order_service.ExceptionHandlers.ProductRelatedExceptions.ProductOutOfStockException;
+import com.example.cart_order_service.ExceptionHandlers.UserrelatedException.UserNotFoundException;
+import com.example.cart_order_service.Inservice_Commnication_Client.ProductServiceClientInterface;
+import com.example.cart_order_service.Inservice_Commnication_Client.UserServiceClientInterface;
 import com.example.cart_order_service.Mappers.CartItemsMappers.CartItemMapper;
 import com.example.cart_order_service.Repositories.CartItemRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,83 +27,124 @@ import java.util.Optional;
 public class CartItemService {
 
     private final CartItemRepo cartItemRepo;
-//    private final UserRepo usersRepo;
-//    private final ProductsRepo productsRepo;
+    private final ProductServiceClientInterface productServiceClient;
     private final CartItemMapper cartItemMapper;
+    private final UserServiceClientInterface userServiceClientInterface;
 
-    public CartItemsResponseDTO createCartItem(Long userId, CartItemRequestDTO cartItemRequestDTO) {
 
-//        Optional<Users> byId = usersRepo.findById(userId);
-//        if(byId.isEmpty())
-//        {
-//            throw new UserNotFoundException("User Not Found");
-//        }
-//        Users users = byId.get();
-//
-//        Optional<Products> byId1 = productsRepo.findById(cartItemRequestDTO.getProductId());
-//        if(byId1.isEmpty())
-//        {
-//            throw new ProductNotFoundException("Product Not Found");
-//        }
-//        Products products = byId1.get();
+    // ===============================
+    // CREATE / ADD CART ITEM
+    // ===============================
+    @Transactional
+    public CartItemsResponseDTO createCartItem(
+            Long userId,
+            CartItemRequestDTO requestDTO) {
 
-        Optional<CartItem> byUserAndProduct = cartItemRepo.findByUserIdAndProductId(String.valueOf(userId),
-                cartItemRequestDTO.getProductId());
-
-        CartItem savedItems=null;
-        if(byUserAndProduct.isPresent())
+        //Validating User Id
+        UserResponseDTO userById;
+        try
         {
-            CartItem cartItem = byUserAndProduct.get();
-            cartItem.setQuantity(cartItem.getQuantity()
-                   + cartItemRequestDTO.getQuantity());
-
-            cartItem.setPrice(BigDecimal.valueOf(1000));
-           savedItems=cartItemRepo.save(cartItem);
+            userById = userServiceClientInterface.getUserById(userId);
         }
-        else {
-            CartItem cartItem = new CartItem();
-            cartItem.setUserId(String.valueOf(userId));
-            cartItem.setProductId(cartItemRequestDTO.getProductId())   ;
-            cartItem.setQuantity(cartItemRequestDTO.getQuantity());
-            cartItem.setPrice(BigDecimal.valueOf(1000));
-            savedItems=cartItemRepo.save(cartItem);
+        catch (ResponseStatusException ex) {
+            throw new UserNotFoundException(
+                    "User Not Found with ID: " + userId
+            );
         }
 
-        return cartItemMapper.
-                MapCartItemToCartItemsResponseDTO(savedItems,userId,
-                        cartItemRequestDTO.getProductId());
 
+        // 1️⃣ Validate quantity
+        if (requestDTO.getQuantity() <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero");
+        }
+
+        // 2️⃣ Fetch product from Product Service
+        ProductResponseDTO product;
+        try {
+            product = productServiceClient.getProductById(
+                    Long.valueOf(requestDTO.getProductId())
+            );
+        } catch (ResponseStatusException ex) {
+            throw new ProductNotFoundException(
+                    "Product Not Found with ID: " + requestDTO.getProductId()
+            );
+        }
+
+        // 3️⃣ Check if cart item already exists
+        Optional<CartItem> existingCartItem =
+                cartItemRepo.findByUserIdAndProductId(
+                        String.valueOf(userId),
+                        requestDTO.getProductId()
+                );
+
+        int totalRequestedQuantity = requestDTO.getQuantity();
+
+        if (existingCartItem.isPresent()) {
+            totalRequestedQuantity += existingCartItem.get().getQuantity();
+        }
+
+        // 4️⃣ Validate stock availability
+        if (product.getQuantity() < totalRequestedQuantity) {
+            throw new ProductOutOfStockException(
+                    "Available stock is " + product.getQuantity() +
+                            ", total requested quantity is " + totalRequestedQuantity
+            );
+        }
+
+        // 5️⃣ Save / Update cart item
+        CartItem cartItem = existingCartItem.orElseGet(CartItem::new);
+
+        cartItem.setUserId(String.valueOf(userId));
+        cartItem.setProductId(requestDTO.getProductId());
+        cartItem.setQuantity(totalRequestedQuantity);
+        cartItem.setPrice(product.getPrice()); // ✅ REAL PRODUCT PRICE
+
+        CartItem savedCartItem = cartItemRepo.save(cartItem);
+
+        // 6️⃣ Map to response DTO
+        return cartItemMapper.MapCartItemToCartItemsResponseDTO(
+                savedCartItem,
+                userId,
+                requestDTO.getProductId()
+        );
     }
 
+    // ===============================
+    // GET ALL CART ITEMS
+    // ===============================
     public List<CartItemsResponseDTO> getAllCartItems(Long userId) {
 
+        List<CartItem> cartItems =
+                cartItemRepo.findByUserId(String.valueOf(userId));
 
-        List<CartItem> cartItems = cartItemRepo.findByUserId(String.valueOf(userId));
-        List<CartItemsResponseDTO> cartItemsResponseDTOList = cartItems.stream()
-                .map(cartItem -> cartItemMapper.MapCartItemToCartItemsResponseDTO(cartItem,
-                        userId, cartItem.getProductId()))
-                .toList();
-
-        if(cartItemsResponseDTOList.isEmpty())
-        {
+        if (cartItems.isEmpty()) {
             throw new CartItemNotFoundException("Cart Items Not Found");
         }
-        return cartItemsResponseDTOList;
+
+        return cartItems.stream()
+                .map(item ->
+                        cartItemMapper.MapCartItemToCartItemsResponseDTO(
+                                item,
+                                userId,
+                                item.getProductId()
+                        ))
+                .toList();
     }
 
+    // ===============================
+    // DELETE ALL CART ITEMS
+    // ===============================
+    @Transactional
     public void deleteCartItems(Long userId) {
-
-
         cartItemRepo.deleteByUserId(String.valueOf(userId));
     }
 
+    // ===============================
+    // DELETE CART BY USER (UTILITY)
+    // ===============================
     @Transactional
-    public boolean deleteCartItemByUser(String userId)
-    {
-        boolean isDeleted=false;
+    public boolean deleteCartItemByUser(String userId) {
         cartItemRepo.deleteByUserId(userId);
-        isDeleted=true;
-        return isDeleted;
-
+        return true;
     }
 }
