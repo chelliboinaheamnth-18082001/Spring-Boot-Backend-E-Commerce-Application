@@ -5,12 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f04b292-fbbe-4a83-b313-564fffa69d5c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/java/com/example/cart_order_service/ExceptionHandlers/CartExceptionHandler/GlobalExceptionHandler/CartGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/java/com/example/cart_order_service/ExceptionHandlers/CartExceptionHandler/GlobalExceptionHandler/CartGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/java/com/example/cart_order_service/Repositories/CartItemRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/java/com/example/cart_order_service/Repositories/CartItemRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/java/com/example/cart_order_service/Services/CartItemServices/CartItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/java/com/example/cart_order_service/Services/CartItemServices/CartItemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/src/main/java/com/example/product_service/Entites/ProductStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/src/main/java/com/example/product_service/Entites/ProductStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/src/main/java/com/example/product_service/Product_DTOs/ProductCategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/src/main/java/com/example/product_service/Product_DTOs/ProductCategoryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/SpringCloudConfigServer/SpringCloud_ConfigServer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/SpringCloudConfigServer/SpringCloud_ConfigServer/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/SpringCloudConfigServer/SpringCloud_ConfigServer/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/SpringCloudConfigServer/SpringCloud_ConfigServer/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/UserService/User_Service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/UserService/User_Service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservices_Project/UserService/User_Service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices_Project/UserService/User_Service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/SpringBoot_Microservices/E_Commerece_Project_Backend/Microservices" value="36mhBZ0KppPJLYl2KzyynasodTm" />
+    </persistenceIdMap>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -26,59 +47,107 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="36mhBZ0KppPJLYl2KzyynasodTm" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.CartOrderServiceApplication.executor": "Run",
-    "Application.ProductServiceApplication.executor": "Run",
-    "Application.SpringCloudConfigServerApplication.executor": "Run",
-    "Application.UserServiceApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "Spring Boot.CartOrderServiceApplication.executor": "Run",
-    "Spring Boot.ProductServiceApplication.executor": "Run",
-    "Spring Boot.SpringCloudConfigServerApplication.executor": "Run",
-    "Spring Boot.UserServiceApplication.executor": "Run",
-    "git-widget-placeholder": "Microservice__Main__Branch",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/SpringBoot_Microservices/E_Commerece_Project_Backend/Microservices/UserService/User_Service",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
-    "settings.editor.splitter.proportion": "0.28134558",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.CartOrderServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ProductServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.SpringCloudConfigServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.UserServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Cart_Order_Service [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Cart_Order_Service [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Cart_Order_Service [validate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Product_Service [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Product_Service [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Product_Service [validate].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CartOrderServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ProductServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.SpringCloudConfigServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.SpringCloudEurekaServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UserServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Microservice__Main__Branch&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/SpringBoot_Microservices/E_Commerece_Project_Backend/Microservices&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.28134558&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\SpringBoot_Microservices\E_Commerece_Project_Backend\Microservices\UserService\User_Service" />
       <recent name="D:\SpringBoot_Microservices\E_Commerece_Project_Backend\Microservices\ProductService\Product_Service" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.cart_order_service.ExceptionHandlers.UserrelatedException" />
+      <recent name="com.example.cart_order_service.DTOs.UserDTOs" />
+      <recent name="com.example.cart_order_service.Inservice_Commnication_Client" />
+      <recent name="com.example.cart_order_service.ExceptionHandlers.ProductRelatedExceptions" />
+      <recent name="com.example.cart_order_service.DTOs.ProductsDTOs" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
-        <option value="Application" />
         <option value="MavenRunConfiguration" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="CartOrderServiceApplication" value="STOPPED" />
+              <entry key="ProductServiceApplication" value="STOPPED" />
+              <entry key="SpringCloudConfigServerApplication" value="STOPPED" />
+              <entry key="SpringCloudEurekaServerApplication" value="STOPPED" />
+              <entry key="UserServiceApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="RunManager" selected="Application.CartOrderServiceApplication">
@@ -92,23 +161,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.example.cart_order_service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProductServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="envFilePaths">
-        <option value="$PROJECT_DIR$/ProductService/Product_Service/.env" />
-      </option>
-      <option name="MAIN_CLASS_NAME" value="com.example.product_service.ProductServiceApplication" />
-      <module name="Product_Service" />
-      <option name="VM_PARAMETERS" value="-Duser.timezone=${JAVA_TIMEZONE}" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.product_service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -146,36 +198,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CartOrderServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="envFilePaths">
-        <option value="$PROJECT_DIR$/CartAndOrderService/Cart_Order_Service/.env" />
-      </option>
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="Cart_Order_Service" />
-      <selectedOptions>
-        <option name="environmentVariables" />
-      </selectedOptions>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.cart_order_service.CartOrderServiceApplication" />
-      <option name="VM_PARAMETERS" value="-Duser.timezone=${JAVA_TIMEZONE}" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProductServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="envFilePaths">
-        <option value="$PROJECT_DIR$/ProductService/Product_Service/.env" />
-      </option>
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="Product_Service" />
-      <selectedOptions>
-        <option name="environmentVariables" />
-      </selectedOptions>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.product_service.ProductServiceApplication" />
-      <option name="VM_PARAMETERS" value="-Duser.timezone=${JAVA_TIMEZONE}" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="SpringCloudConfigServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="SpringCloud_ConfigServer" />
@@ -184,9 +206,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="SpringCloudEurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="SpringCloud_EurekaServer" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.springcloud_eurekaserver.SpringCloudEurekaServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="envFilePaths">
-        <option value="$PROJECT_DIR$/UserService/User_Service/.env" />
+        <option value="$PROJECT_DIR$/Microservices_Project/UserService/User_Service/.env" />
       </option>
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="User_Service" />
@@ -194,30 +224,45 @@
         <option name="environmentVariables" />
       </selectedOptions>
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.user_service.UserServiceApplication" />
-      <option name="VM_PARAMETERS" value="-Duser.timezone=${JAVA_TIMEZONE} " />
+      <option name="VM_PARAMETERS" value="-Duser.timezone=${JAVA_TIMEZONE}" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.user_service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Application.CartOrderServiceApplication" />
-      <item itemvalue="Application.ProductServiceApplication" />
       <item itemvalue="Application.SpringCloudConfigServerApplication" />
       <item itemvalue="Application.UserServiceApplication" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.UserServiceApplication" />
-        <item itemvalue="Application.CartOrderServiceApplication" />
-        <item itemvalue="Application.ProductServiceApplication" />
         <item itemvalue="Application.SpringCloudConfigServerApplication" />
+        <item itemvalue="Application.CartOrderServiceApplication" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
       </set>
     </attachedChunks>
   </component>
@@ -236,6 +281,17 @@
       <workItem from="1765980726008" duration="5206000" />
       <workItem from="1766323550089" duration="1325000" />
       <workItem from="1766593045778" duration="10000" />
+      <workItem from="1769240005171" duration="64000" />
+      <workItem from="1769240157478" duration="209000" />
+      <workItem from="1769240385779" duration="905000" />
+      <workItem from="1769244025302" duration="632000" />
+      <workItem from="1769317372549" duration="977000" />
+      <workItem from="1769320600793" duration="3479000" />
+      <workItem from="1769405516324" duration="57000" />
+      <workItem from="1769405686554" duration="3167000" />
+      <workItem from="1769409419229" duration="9165000" />
+      <workItem from="1769696951503" duration="29000" />
+      <workItem from="1769697041944" duration="7000" />
     </task>
     <servers />
   </component>
@@ -243,6 +299,30 @@
     <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.integration:spring-integration-core" />
+    <option featureType="dependencySupport" implementationName="java:io.projectreactor:reactor-core" />
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.cloud:spring-cloud-context" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="application.yml" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.cloud:spring-cloud-stream" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-messaging" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

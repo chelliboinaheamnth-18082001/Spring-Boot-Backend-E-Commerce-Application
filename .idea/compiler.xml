@@ -7,14 +7,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="SpringCloud_EurekaServer" />
         <module name="SpringCloud_ConfigServer" />
       </profile>
       <profile name="Annotation profile for User_Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath>
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
         </processorPath>
         <module name="Cart_Order_Service" />
         <module name="Product_Service" />
@@ -27,6 +28,7 @@
       <module name="Cart_Order_Service" options="-parameters" />
       <module name="Product_Service" options="-parameters" />
       <module name="SpringCloud_ConfigServer" options="-parameters" />
+      <module name="SpringCloud_EurekaServer" options="-parameters" />
       <module name="User_Service" options="-parameters" />
     </option>
   </component>

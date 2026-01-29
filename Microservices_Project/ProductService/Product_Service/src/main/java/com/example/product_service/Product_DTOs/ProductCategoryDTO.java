@@ -5,8 +5,7 @@ import lombok.Data;
 @Data
 public class ProductCategoryDTO {
     private String name;
-
-    private String BrandName;
-
-    private String ModelName;
+    private String brandName;
+    private String modelName;
 }
+

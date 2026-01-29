@@ -1,6 +1,6 @@
 spring:
   application:
-    name: User_Service
+    name: UserService
 
   config:
     import: optional:configserver:http://localhost:8888
@@ -16,4 +16,11 @@ management:
     web:
       exposure:
         include: "*"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
 
