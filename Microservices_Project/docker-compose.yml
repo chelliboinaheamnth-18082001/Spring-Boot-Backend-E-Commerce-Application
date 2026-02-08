@@ -48,6 +48,16 @@ services:
       - backend
     restart: unless-stopped
 
+  zipkin:
+    container_name: zipkin_container
+    image: openzipkin/zipkin
+    mem_limit: 700m
+    ports:
+      - "9411:9411"
+    networks:
+      - backend
+    restart: unless-stopped
+
 networks:
   backend:
 

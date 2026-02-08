@@ -10,3 +10,18 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
 
+logging:
+  file:
+    name: microservices_logs/SpringCloud_EurekaServer.log
+  level:
+    root: INFO
+    org.springframework.web.client: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
+
