@@ -13,6 +13,8 @@ import com.example.cart_order_service.Inservice_Commnication_Client.ProductServi
 import com.example.cart_order_service.Inservice_Commnication_Client.UserServiceClientInterface;
 import com.example.cart_order_service.Mappers.CartItemsMappers.CartItemMapper;
 import com.example.cart_order_service.Repositories.CartItemRepo;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +32,20 @@ public class CartItemService {
     private final ProductServiceClientInterface productServiceClient;
     private final CartItemMapper cartItemMapper;
     private final UserServiceClientInterface userServiceClientInterface;
-
+    public static int counter=0;
 
     // ===============================
     // CREATE / ADD CART ITEM
+
     // ===============================
     @Transactional
+
+    @CircuitBreaker(name = "ProductService", fallbackMethod = "createCartItemFallback")
+    @Retry(name="retryBreaker",fallbackMethod = "createCartItemFallback")
     public CartItemsResponseDTO createCartItem(
             Long userId,
             CartItemRequestDTO requestDTO) {
+
 
         //Validating User Id
         UserResponseDTO userById;
@@ -58,9 +65,12 @@ public class CartItemService {
             throw new IllegalArgumentException("Quantity must be greater than zero");
         }
 
+
         // 2️⃣ Fetch product from Product Service
         ProductResponseDTO product;
         try {
+            counter++;
+            System.out.println("The Product Service Retried for : "+counter);
             product = productServiceClient.getProductById(
                     Long.valueOf(requestDTO.getProductId())
             );
@@ -106,6 +116,19 @@ public class CartItemService {
                 savedCartItem,
                 userId,
                 requestDTO.getProductId()
+        );
+    }
+
+
+    public CartItemsResponseDTO createCartItemFallback(
+            Long userId,
+            CartItemRequestDTO requestDTO,
+            Throwable throwable) {
+
+        // You can decide what to return when ProductService is down.
+        // For example, return a placeholder response or throw a custom exception.
+        throw new ProductNotFoundException(
+                "Product Service is currently unavailable. Please try again later."
         );
     }
 

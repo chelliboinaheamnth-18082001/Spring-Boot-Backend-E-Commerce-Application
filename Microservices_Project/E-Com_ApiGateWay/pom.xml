@@ -74,6 +74,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Source: https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-circuitbreaker-resilience4j -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
+		</dependency>
+
+
 
 	</dependencies>
 
