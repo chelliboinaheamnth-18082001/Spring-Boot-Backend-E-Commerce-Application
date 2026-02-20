@@ -26,6 +26,9 @@ public class GatewayRouteConfig {
                 // Product Service Route
                 .route("product_service", r -> r
                         .path("/api/products/**")
+                        .filters(f -> f.circuitBreaker
+                                (c -> c.setName("ECommCircuitBreaker")
+                                .setFallbackUri("forward:/product-service-fallback")))
                         .uri("lb://PRODUCTSERVICE"))
 
                 // Cart + Order Service Route

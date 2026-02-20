@@ -20,6 +20,10 @@ management:
     sampling:
       probability: 1.0
 
+  endpoint:
+    circuitbreakers:
+      enabled: true
+
 eureka:
   client:
     service-url:
@@ -38,3 +42,21 @@ logging:
   level:
     root: INFO
     org.springframework.web.client: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ProductService:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        wait-duration-in-open-state: 10s
+        failure-rate-threshold: 50
+        automatic-transition-from-open-to-half-open-enabled: true
+        sliding-window-type: COUNT_BASED
+  retry:
+    instances:
+      retryBreaker:
+        max-attempts: 5
+        wait-duration: 7s
