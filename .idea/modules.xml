@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/Cart_Order_Service.iml" filepath="$PROJECT_DIR$/Microservices_Project/CartAndOrderService/Cart_Order_Service/Cart_Order_Service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices_Project/E-Com_ApiGateWay/E-Com_ApiGateWay.iml" filepath="$PROJECT_DIR$/Microservices_Project/E-Com_ApiGateWay/E-Com_ApiGateWay.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Microservices.iml" filepath="$PROJECT_DIR$/.idea/Microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/Product_Service.iml" filepath="$PROJECT_DIR$/Microservices_Project/ProductService/Product_Service/Product_Service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices_Project/SpringCloudConfigServer/SpringCloud_ConfigServer/SpringCloud_ConfigServer.iml" filepath="$PROJECT_DIR$/Microservices_Project/SpringCloudConfigServer/SpringCloud_ConfigServer/SpringCloud_ConfigServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices_Project/SpringCloud_EurekaServer/SpringCloud_EurekaServer.iml" filepath="$PROJECT_DIR$/Microservices_Project/SpringCloud_EurekaServer/SpringCloud_EurekaServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices_Project/UserService/User_Service/User_Service.iml" filepath="$PROJECT_DIR$/Microservices_Project/UserService/User_Service/User_Service.iml" />
     </modules>
   </component>
 </project>
