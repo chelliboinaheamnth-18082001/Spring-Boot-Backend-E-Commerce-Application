@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: Notification-Service
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8085
+
+
+RabbitMq:
+  exchange:
+    name: order.exchange
+  queue:
+    name: order.queue
+  routing:
+    name: order.tracking

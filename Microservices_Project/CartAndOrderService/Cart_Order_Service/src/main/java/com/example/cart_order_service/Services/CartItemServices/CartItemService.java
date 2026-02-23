@@ -17,7 +17,6 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,55 +31,60 @@ public class CartItemService {
     private final ProductServiceClientInterface productServiceClient;
     private final CartItemMapper cartItemMapper;
     private final UserServiceClientInterface userServiceClientInterface;
-    public static int counter=0;
+
+    public static int counter = 0;
 
     // ===============================
     // CREATE / ADD CART ITEM
-
     // ===============================
     @Transactional
-
-    @CircuitBreaker(name = "ProductService", fallbackMethod = "createCartItemFallback")
-    @Retry(name="retryBreaker",fallbackMethod = "createCartItemFallback")
+    //@CircuitBreaker(name = "ProductService", fallbackMethod = "createCartItemFallback")
+    //@Retry(name="retryBreaker",fallbackMethod = "createCartItemFallback")
     public CartItemsResponseDTO createCartItem(
             Long userId,
             CartItemRequestDTO requestDTO) {
 
-
-        //Validating User Id
-        UserResponseDTO userById;
-        try
-        {
-            userById = userServiceClientInterface.getUserById(userId);
-        }
-        catch (ResponseStatusException ex) {
+        // 1️⃣ Validate User
+        try {
+            UserResponseDTO user =
+                    userServiceClientInterface.getUserById(userId);
+        } catch (ResponseStatusException ex) {
             throw new UserNotFoundException(
                     "User Not Found with ID: " + userId
             );
         }
 
-
-        // 1️⃣ Validate quantity
+        // 2️⃣ Validate Quantity
         if (requestDTO.getQuantity() <= 0) {
-            throw new IllegalArgumentException("Quantity must be greater than zero");
+            throw new IllegalArgumentException(
+                    "Quantity must be greater than zero"
+            );
         }
 
-
-        // 2️⃣ Fetch product from Product Service
+        // 3️⃣ Fetch Product
         ProductResponseDTO product;
         try {
             counter++;
-            System.out.println("The Product Service Retried for : "+counter);
+            System.out.println("Product Service Call Attempt: " + counter);
+
             product = productServiceClient.getProductById(
                     Long.valueOf(requestDTO.getProductId())
             );
+
         } catch (ResponseStatusException ex) {
-            throw new ProductNotFoundException(
-                    "Product Not Found with ID: " + requestDTO.getProductId()
-            );
+
+            // 🚫 BUSINESS ERROR → DO NOT MASK
+            if (ex.getStatusCode().value() == 404) {
+                throw new ProductNotFoundException(
+                        "Product Not Found with ID: " + requestDTO.getProductId()
+                );
+            }
+
+            // ⚠️ INFRA ERROR → RETRY + FALLBACK
+            throw ex;
         }
 
-        // 3️⃣ Check if cart item already exists
+        // 4️⃣ Check existing cart item
         Optional<CartItem> existingCartItem =
                 cartItemRepo.findByUserIdAndProductId(
                         String.valueOf(userId),
@@ -90,28 +94,32 @@ public class CartItemService {
         int totalRequestedQuantity = requestDTO.getQuantity();
 
         if (existingCartItem.isPresent()) {
-            totalRequestedQuantity += existingCartItem.get().getQuantity();
+            totalRequestedQuantity +=
+                    existingCartItem.get().getQuantity();
         }
 
-        // 4️⃣ Validate stock availability
+        // 5️⃣ Validate Stock
         if (product.getQuantity() < totalRequestedQuantity) {
             throw new ProductOutOfStockException(
-                    "Available stock is " + product.getQuantity() +
-                            ", total requested quantity is " + totalRequestedQuantity
+                    "Available stock is " + product.getQuantity()
+                            + ", total requested quantity is "
+                            + totalRequestedQuantity
             );
         }
 
-        // 5️⃣ Save / Update cart item
-        CartItem cartItem = existingCartItem.orElseGet(CartItem::new);
+        // 6️⃣ Save / Update Cart Item
+        CartItem cartItem =
+                existingCartItem.orElseGet(CartItem::new);
 
         cartItem.setUserId(String.valueOf(userId));
         cartItem.setProductId(requestDTO.getProductId());
         cartItem.setQuantity(totalRequestedQuantity);
-        cartItem.setPrice(product.getPrice()); // ✅ REAL PRODUCT PRICE
+        cartItem.setPrice(product.getPrice());
 
-        CartItem savedCartItem = cartItemRepo.save(cartItem);
+        CartItem savedCartItem =
+                cartItemRepo.save(cartItem);
 
-        // 6️⃣ Map to response DTO
+        // 7️⃣ Map Response
         return cartItemMapper.MapCartItemToCartItemsResponseDTO(
                 savedCartItem,
                 userId,
@@ -119,15 +127,29 @@ public class CartItemService {
         );
     }
 
-
+    // ===============================
+    // FALLBACK METHOD (SMART)
+    // ===============================
     public CartItemsResponseDTO createCartItemFallback(
             Long userId,
             CartItemRequestDTO requestDTO,
             Throwable throwable) {
 
-        // You can decide what to return when ProductService is down.
-        // For example, return a placeholder response or throw a custom exception.
-        throw new ProductNotFoundException(
+        // 🔥 RE-THROW BUSINESS EXCEPTIONS EXACTLY
+        if (throwable instanceof ProductNotFoundException) {
+            throw (ProductNotFoundException) throwable;
+        }
+
+        if (throwable instanceof UserNotFoundException) {
+            throw (UserNotFoundException) throwable;
+        }
+
+        if (throwable instanceof ProductOutOfStockException) {
+            throw (ProductOutOfStockException) throwable;
+        }
+
+        // 🧱 INFRASTRUCTURE FAILURE ONLY
+        throw new RuntimeException(
                 "Product Service is currently unavailable. Please try again later."
         );
     }
@@ -138,19 +160,24 @@ public class CartItemService {
     public List<CartItemsResponseDTO> getAllCartItems(Long userId) {
 
         List<CartItem> cartItems =
-                cartItemRepo.findByUserId(String.valueOf(userId));
+                cartItemRepo.findByUserId(
+                        String.valueOf(userId)
+                );
 
         if (cartItems.isEmpty()) {
-            throw new CartItemNotFoundException("Cart Items Not Found");
+            throw new CartItemNotFoundException(
+                    "Cart Items Not Found"
+            );
         }
 
         return cartItems.stream()
                 .map(item ->
-                        cartItemMapper.MapCartItemToCartItemsResponseDTO(
-                                item,
-                                userId,
-                                item.getProductId()
-                        ))
+                        cartItemMapper
+                                .MapCartItemToCartItemsResponseDTO(
+                                        item,
+                                        userId,
+                                        item.getProductId()
+                                ))
                 .toList();
     }
 
@@ -159,7 +186,9 @@ public class CartItemService {
     // ===============================
     @Transactional
     public void deleteCartItems(Long userId) {
-        cartItemRepo.deleteByUserId(String.valueOf(userId));
+        cartItemRepo.deleteByUserId(
+                String.valueOf(userId)
+        );
     }
 
     // ===============================
