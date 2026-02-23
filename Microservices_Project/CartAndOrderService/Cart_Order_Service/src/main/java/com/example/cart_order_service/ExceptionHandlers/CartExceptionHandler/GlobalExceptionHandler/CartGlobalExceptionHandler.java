@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -81,6 +82,23 @@ public class CartGlobalExceptionHandler {
 
 
 
+    }
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ErrorDTO> handleResponseStatusException(
+            ResponseStatusException ex,
+            HttpServletRequest request) {
+
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .message(ex.getReason()) // IMPORTANT: not ex.getMessage()
+                .path(request.getRequestURI())
+                .method(request.getMethod())
+                .status(ex.getStatusCode().value())
+                .build();
+
+        return ResponseEntity
+                .status(ex.getStatusCode())
+                .body(errorDTO);
     }
 
 }
