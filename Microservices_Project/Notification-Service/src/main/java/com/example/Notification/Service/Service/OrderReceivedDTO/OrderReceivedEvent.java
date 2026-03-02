@@ -1,4 +1,4 @@
-package com.example.Notification.Service.OrderReceivedDTO;
+package main.java.com.example.Notification.Service.Service.OrderReceivedDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -11,6 +11,22 @@ spring:
     username: guest
     password: guest
 
+  cloud:
+    stream:
+      bindings:
+        createOrder-out-0:
+          destination: order.exchange
+          content-type: application/json
+          binder: kafka
+
+      kafka:
+        binder:
+          brokers: localhost:9092
+#      rabbit:
+#        bindings:
+#          createOrder-out-0:
+#            producer:
+#              routing-key-expression: '''order.tracking'''
 management:
   endpoints:
     web:
@@ -73,10 +89,10 @@ resilience4j:
           - com.example.cart_order_service.ExceptionHandlers.UserrelatedException.UserNotFoundException
           - java.lang.IllegalArgumentException
 
-RabbitMq:
-  exchange:
-    name: order.exchange
-  queue:
-    name: order.queue
-  routing:
-    name: order.tracking
+#RabbitMq:
+#  exchange:
+#    name: order.exchange
+#  queue:
+#    name: order.queue
+#  routing:
+#    name: order.tracking
