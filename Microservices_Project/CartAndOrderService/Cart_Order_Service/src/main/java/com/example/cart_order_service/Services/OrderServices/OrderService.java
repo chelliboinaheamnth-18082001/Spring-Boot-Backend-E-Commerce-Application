@@ -12,7 +12,7 @@ import com.example.cart_order_service.Repositories.CartItemRepo;
 import com.example.cart_order_service.Repositories.OrderRepo;
 import com.example.cart_order_service.Services.CartItemServices.CartItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public class OrderService {
     private final OrderRepo orderRepo;
     private final CartItemService cartItemService;
     private final OrderMapperClass orderMapperClass;
-    private final RabbitTemplate rabbitTemplate;
+    private final StreamBridge streamBridge;
 
     public OrderResponseDTO createOrder(Long userId) {
 
@@ -64,7 +64,7 @@ public class OrderService {
 
         Order savedOrder = orderRepo.save(order);
 
-        // 4️⃣ BUILD EVENT DTO
+        // 4️⃣ Build Event
         OrderCreatedEvent event = OrderCreatedEvent.builder()
                 .orderId(savedOrder.getId())
                 .userId(savedOrder.getUserId())
@@ -83,12 +83,8 @@ public class OrderService {
                 )
                 .build();
 
-        // 5️⃣ PUBLISH EVENT
-        rabbitTemplate.convertAndSend(
-                "order.exchange",
-                "order.tracking",
-                event
-        );
+        // 5️⃣ Publish Event using Spring Cloud Stream
+        streamBridge.send("createOrder-out-0", event);
 
         // 6️⃣ Clear cart
         boolean deleted =
