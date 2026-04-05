@@ -37,3 +37,15 @@ logging:
     root: INFO
     org.springframework.web.client: DEBUG
 
+
+keycloak:
+  admin:
+    username: user1
+    password: User1@123
+    server-url: http://localhost:8987   # ✅ FIXED (was http://keycloak:8987)
+    realm: E-Comm-Application
+    client-id: admin-cli
+    client-uid: fca6137e-88dd-47c3-844c-8deb95edb713
+    # client-secret: your-client-secret  # 🔥 Uncomment if client is confidential
+          # ⚠️ IMPORTANT
+# Optional but recommended (for debugging)
