@@ -20,6 +20,8 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String KeyCloakId;
+
     private String firstName;
 
     private String lastName;

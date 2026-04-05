@@ -68,6 +68,19 @@ services:
       - backend
     restart: unless-stopped
 
+  keycloak:
+    container_name: keycloak_container
+    image: quay.io/keycloak/keycloak:26.5.6
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8987:8080"
+    networks:
+      - backend
+    restart: unless-stopped
+
   kafka:
     container_name: kafka_container
     image: confluentinc/cp-kafka:7.5.0

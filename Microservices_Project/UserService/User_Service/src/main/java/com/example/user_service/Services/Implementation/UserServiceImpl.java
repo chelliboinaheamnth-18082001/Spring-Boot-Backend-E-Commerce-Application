@@ -4,6 +4,7 @@ import com.example.user_service.Entites.Address;
 import com.example.user_service.Entites.Users;
 import com.example.user_service.ExceptionHandlers.UserNotFoundException;
 import com.example.user_service.Repositories.UserRepo;
+import com.example.user_service.Services.KeyclockService.KeyClockUserService;
 import com.example.user_service.Services.UserService;
 import com.example.user_service.User_DTOs.UserRequestDto;
 import com.example.user_service.User_DTOs.UserResponseDTO;
@@ -21,9 +22,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
     private final UserMappers userMappers;
+    private final KeyClockUserService keyCloakAdminService;
 
     @Override
     public UserResponseDTO createUser(UserRequestDto userRequestDto) {
+//        String token = keyCloakAdminService.getAdminAccessToken();
+//        String keycloakUserId =
+//                keyCloakAdminService.createUser(token,userRequestDto);
         String email = userRequestDto.getEmail();
         String mobileNumber = userRequestDto.getMobileNumber();
 
@@ -32,6 +37,18 @@ public class UserServiceImpl implements UserService {
         }
 
         Users users = userMappers.MpaUsesDtoToUser(userRequestDto);
+        String token = keyCloakAdminService.getAdminAccessToken();
+
+        String keycloakUserId =
+                keyCloakAdminService.createUser(token, userRequestDto);
+
+        keyCloakAdminService.assignClientRoleToUser(
+                token,   // ✅ reuse token
+                userRequestDto.getUsername(),
+                userRequestDto.getUserRole().toString(),
+                keycloakUserId
+        );
+        users.setKeyCloakId(keycloakUserId);
         userRepo.save(users);
         UserResponseDTO userResponseDTO = userMappers.MpaUserToUserResponseDTO(users);
         return userResponseDTO;
