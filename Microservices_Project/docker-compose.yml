@@ -1,8 +1,11 @@
+version: '3.8'
+
 services:
+
   postgres:
     container_name: postgres
     image: postgres:14
-    mem_limit: 700m
+    mem_limit: 512m
     environment:
       TZ: Asia/Kolkata
       POSTGRES_USER: hemanth
@@ -20,7 +23,7 @@ services:
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
-    mem_limit: 700m
+    mem_limit: 256m
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: admin
@@ -29,6 +32,8 @@ services:
       - pgadmin:/var/lib/pgadmin
     ports:
       - "5050:80"
+    depends_on:
+      - postgres
     networks:
       - backend
     restart: unless-stopped
@@ -36,9 +41,7 @@ services:
   rabbitmq:
     container_name: rabbitmq_container
     image: rabbitmq:3-management
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+    mem_limit: 512m
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -49,7 +52,7 @@ services:
   zipkin:
     container_name: zipkin_container
     image: openzipkin/zipkin
-    mem_limit: 700m
+    mem_limit: 256m
     ports:
       - "9411:9411"
     networks:
@@ -58,7 +61,8 @@ services:
 
   zookeeper:
     container_name: zookeeper_container
-    image: confluentinc/cp-zookeeper:7.5.0
+    image: confluentinc/cp-zookeeper:7.4.0
+    mem_limit: 512m
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -68,22 +72,10 @@ services:
       - backend
     restart: unless-stopped
 
-  keycloak:
-    container_name: keycloak_container
-    image: quay.io/keycloak/keycloak:26.5.6
-    command: start-dev
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    ports:
-      - "8987:8080"
-    networks:
-      - backend
-    restart: unless-stopped
-
   kafka:
     container_name: kafka_container
-    image: confluentinc/cp-kafka:7.5.0
+    image: confluentinc/cp-kafka:7.4.0
+    mem_limit: 1g
     depends_on:
       - zookeeper
     ports:
@@ -92,8 +84,140 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper_container:2181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka_container:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - backend
+    restart: unless-stopped
+
+  keycloak:
+    container_name: keycloak_container
+    image: quay.io/keycloak/keycloak:26.5.6
+    command: start-dev
+    mem_limit: 1g
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+      # 🔥 FINAL FIX FOR ISSUER
+      KC_HOSTNAME_URL: http://localhost:8987
+      KC_HOSTNAME_ADMIN_URL: http://localhost:8987
+      KC_HOSTNAME_STRICT: false
+    ports:
+      - "8987:8080"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  config-server:
+    build: ./SpringCloudConfigServer/SpringCloud_ConfigServer
+    container_name: config-server
+    image: config-server
+    mem_limit: 512m
+    ports:
+      - "8888:8888"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - backend
+    restart: unless-stopped
+
+  eureka-server:
+    build: ./SpringCloud_EurekaServer
+    container_name: eureka
+    image: eureka-server
+    mem_limit: 512m
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - config-server
+    networks:
+      - backend
+    restart: unless-stopped
+
+  ApiGateWayService:
+    build: ./E-Com_ApiGateWay
+    container_name: ApiGateWay
+    image: api-gateway
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - eureka-server
+      - config-server
+    networks:
+      - backend
+    restart: unless-stopped
+
+  NotificationService:
+    build: ./Notification-Service
+    container_name: Notification
+    image: notification-service
+    mem_limit: 512m
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - rabbitmq
+    networks:
+      - backend
+    restart: unless-stopped
+
+  ProductService:
+    build: ./ProductService/Product_Service
+    container_name: ProductService
+    image: product-service
+    mem_limit: 512m
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USERNAME: hemanth
+      DB_PASSWORD: hemanth
+    depends_on:
+      - postgres
+      - eureka-server
+    networks:
+      - backend
+    restart: unless-stopped
+
+  UserService:
+    build: ./UserService/User_Service
+    container_name: UserService
+    image: user-service
+    mem_limit: 512m
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USERNAME: hemanth
+      DB_PASSWORD: hemanth
+    depends_on:
+      - postgres
+      - eureka-server
+    networks:
+      - backend
+    restart: unless-stopped
+
+  CartOrderService:
+    build: ./CartAndOrderService/Cart_Order_Service
+    container_name: CartOrderService
+    image: cart-order-service
+    mem_limit: 512m
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USERNAME: hemanth
+      DB_PASSWORD: hemanth
+    depends_on:
+      - postgres
+      - kafka
     networks:
       - backend
     restart: unless-stopped

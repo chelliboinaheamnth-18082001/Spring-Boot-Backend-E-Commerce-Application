@@ -3,10 +3,10 @@ spring:
     name: UserService
 
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://config-server:8888
 
   rabbitmq:
-    host: localhost
+    host: rabbitmq_container
     port: 5672
     username: guest
     password: guest
@@ -23,11 +23,11 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
   instance:
-    hostname: localhost
+#    hostname: localhost
     prefer-ip-address: true
 
 logging:
@@ -42,10 +42,10 @@ keycloak:
   admin:
     username: user1
     password: User1@123
-    server-url: http://localhost:8987   # ✅ FIXED (was http://keycloak:8987)
+    server-url: http://keycloak:8080   # ✅ FIXED (was http://keycloak:8987)
     realm: E-Comm-Application
     client-id: admin-cli
-    client-uid: 7619fbb6-383a-40a9-bad2-b69242967915
+    client-uid: 1dd75ae9-1e3f-4ab8-ac44-0284cc285fe7
     # client-secret: your-client-secret  # 🔥 Uncomment if client is confidential
           # ⚠️ IMPORTANT
 # Optional but recommended (for debugging)

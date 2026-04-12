@@ -1,0 +1,98 @@
+spring:
+  application:
+    name: CartOrderService
+
+  config:
+    import: optional:configserver:http://config-server:8888
+
+  rabbitmq:
+    host: rabbitmq_container
+    port: 5672
+    username: guest
+    password: guest
+
+  cloud:
+    stream:
+      bindings:
+        createOrder-out-0:
+          destination: order.exchange
+          content-type: application/json
+          binder: kafka
+
+      kafka:
+        binder:
+          brokers: kafka_container:9092
+#      rabbit:
+#        bindings:
+#          createOrder-out-0:
+#            producer:
+#              routing-key-expression: '''order.tracking'''
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
+
+  endpoint:
+    circuitbreakers:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+#    hostname: localhost
+    prefer-ip-address: true
+
+logging:
+  file:
+    name: microservices_logs/Cart_Order_Service.log
+  level:
+    root: INFO
+    org.springframework.web.client: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ProductService:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        wait-duration-in-open-state: 10s
+        failure-rate-threshold: 50
+        automatic-transition-from-open-to-half-open-enabled: true
+        sliding-window-type: COUNT_BASED
+
+  retry:
+    instances:
+      retryBreaker:
+        max-attempts: 3
+        wait-duration: 2s
+
+        # ✅ ONLY retry infrastructure failures
+        retry-exceptions:
+          - java.io.IOException
+          - org.springframework.web.client.HttpServerErrorException
+          - org.springframework.web.client.ResourceAccessException
+
+        # 🚫 NEVER retry business exceptions
+        ignore-exceptions:
+          - com.example.cart_order_service.ExceptionHandlers.ProductRelatedExceptions.ProductNotFoundException
+          - com.example.cart_order_service.ExceptionHandlers.ProductRelatedExceptions.ProductOutOfStockException
+          - com.example.cart_order_service.ExceptionHandlers.UserrelatedException.UserNotFoundException
+          - java.lang.IllegalArgumentException
+
+#RabbitMq:
+#  exchange:
+#    name: order.exchange
+#  queue:
+#    name: order.queue
+#  routing:
+#    name: order.tracking

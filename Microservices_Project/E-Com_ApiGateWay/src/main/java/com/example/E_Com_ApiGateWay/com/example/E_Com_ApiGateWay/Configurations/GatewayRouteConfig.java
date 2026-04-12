@@ -21,7 +21,7 @@ public class GatewayRouteConfig {
                 // User Service Route
                 .route("user_service", r -> r
                         .path("/api/users", "/api/users/**")
-                        .uri("lb://USERSERVICE"))
+                        .uri("lb://UserService"))
 
                 // Product Service Route
                 .route("product_service", r -> r
@@ -29,12 +29,12 @@ public class GatewayRouteConfig {
                         .filters(f -> f.circuitBreaker
                                 (c -> c.setName("ECommCircuitBreaker")
                                 .setFallbackUri("forward:/product-service-fallback")))
-                        .uri("lb://PRODUCTSERVICE"))
+                        .uri("lb://productService"))
 
                 // Cart + Order Service Route
                 .route("cart_order_service", r -> r
                         .path("/api/cart-items/**", "/api/order/**")
-                        .uri("lb://CARTORDERSERVICE"))
+                        .uri("lb://CartOrderService"))
 
                 .build();
     }
