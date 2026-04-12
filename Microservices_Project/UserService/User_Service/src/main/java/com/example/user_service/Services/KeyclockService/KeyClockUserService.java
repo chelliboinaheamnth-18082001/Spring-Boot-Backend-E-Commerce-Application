@@ -30,11 +30,11 @@ public class KeyClockUserService {
     @Value("${keycloak.admin.realm}")
     private String realm;
 
-    // ✅ Used ONLY for token generation
+    // For token generation
     @Value("${keycloak.admin.client-id}")
     private String clientId;
 
-    // ✅ Used ONLY for admin APIs (VERY IMPORTANT)
+    // IMPORTANT → internal UUID of client
     @Value("${keycloak.admin.client-uid}")
     private String clientUid;
 
@@ -121,7 +121,7 @@ public class KeyClockUserService {
         return path.substring(path.lastIndexOf("/") + 1);
     }
 
-    // 🎭 STEP 3: Get CLIENT Role (FIXED)
+    // 🎭 STEP 3: Get CLIENT Role
     private Map<String, Object> getClientRoleRepresentation(
             String token,
             String roleName
@@ -134,7 +134,7 @@ public class KeyClockUserService {
 
         String url = keycloakServerUrl +
                 "/admin/realms/" + realm +
-                "/clients/" + clientUid +     // ✅ UUID used
+                "/clients/" + clientUid +
                 "/roles/" + roleName;
 
         ResponseEntity<Map> response = restTemplate.exchange(
@@ -154,7 +154,7 @@ public class KeyClockUserService {
         return response.getBody();
     }
 
-    // 🔗 STEP 4: Assign CLIENT Role (FIXED)
+    // 🔗 STEP 4: Assign CLIENT Role (🔥 FIXED)
     public void assignClientRoleToUser(
             String token,
             String username,
@@ -162,34 +162,48 @@ public class KeyClockUserService {
             String userId
     ) {
 
-        Map<String, Object> roleRep =
-                getClientRoleRepresentation(token, roleName);
+        try {
+            Map<String, Object> roleRepFull =
+                    getClientRoleRepresentation(token, roleName);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
+            // ✅ IMPORTANT FIX → send only id + name
+            Map<String, Object> roleRep = new HashMap<>();
+            roleRep.put("id", roleRepFull.get("id"));
+            roleRep.put("name", roleRepFull.get("name"));
 
-        HttpEntity<List<Map<String, Object>>> entity =
-                new HttpEntity<>(List.of(roleRep), headers);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(token);
 
-        String url = keycloakServerUrl +
-                "/admin/realms/" + realm +
-                "/users/" + userId +
-                "/role-mappings/clients/" + clientUid;   // ✅ UUID used
+            HttpEntity<List<Map<String, Object>>> entity =
+                    new HttpEntity<>(List.of(roleRep), headers);
 
-        ResponseEntity<Void> response = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                entity,
-                Void.class
-        );
+            String url = keycloakServerUrl +
+                    "/admin/realms/" + realm +
+                    "/users/" + userId +
+                    "/role-mappings/clients/" + clientUid;
 
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException(
-                    "Failed to assign role " + roleName +
-                            " to user " + username +
-                            ": HTTP " + response.getStatusCode()
+            ResponseEntity<Void> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    Void.class
             );
+
+            System.out.println("Assign Role Status: " + response.getStatusCode());
+
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException(
+                        "Failed to assign role " + roleName +
+                                " to user " + username +
+                                ": HTTP " + response.getStatusCode()
+                );
+            }
+
+        } catch (Exception e) {
+            System.out.println("❌ Role assignment failed: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Role assignment failed", e);
         }
     }
 }

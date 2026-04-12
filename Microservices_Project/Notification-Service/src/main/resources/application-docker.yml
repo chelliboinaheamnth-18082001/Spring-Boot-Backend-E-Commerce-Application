@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: notification-service
+
+  kafka:
+    bootstrap-servers: kafka_container:9092
+
+  cloud:
+    stream:
+      bindings:
+        orderNotification-in-0:
+          destination: order.exchange
+          group: notification-service
+          content-type: application/json
+          binder: kafka
+
+      kafka:
+        bindings:
+          orderNotification-in-0:
+            consumer:
+              autoCommitOffset: false
+              startOffset: earliest
+
+
+  rabbitmq:
+    host: rabbitmq_container
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8085

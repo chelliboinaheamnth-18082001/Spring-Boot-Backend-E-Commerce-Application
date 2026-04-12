@@ -31,25 +31,30 @@ public class ProductsServiceImpl implements ProductService {
     @Override
     public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO) {
 
-        String modelName = productRequestDTO.getModelName();
-        modelName=modelName.toUpperCase();
-        modelName=modelName.trim().replaceAll("\\s+", " ");
+        // Normalize model name
+        String normalizedModelName = productRequestDTO.getModelName()
+                .toUpperCase()
+                .trim()
+                .replaceAll("\\s+", " ");
 
-        boolean isProductExists = productsRepo.
-                existsByModelName(modelName);
-
-        if(isProductExists)
-        {
+        // Check if product already exists
+        boolean isProductExists = productsRepo.existsByModelName(normalizedModelName);
+        if (isProductExists) {
             throw new ProductAlreadyExistsException("Product with name " +
-                    productRequestDTO.getModelName() + " already exists");
+                    normalizedModelName + " already exists");
         }
 
+        // Map DTO to entity
         Products products = productMapper.MapProductDtoToProduct(productRequestDTO);
-        productsRepo.save(products);
-        ProductResponseDTO productResponseDTO = productMapper.
-                MapProductToProductResponseDTO(products);
-        return productResponseDTO;
 
+        // Ensure normalized model name is set before saving
+        products.setModelName(normalizedModelName);
+
+        // Save product
+        productsRepo.save(products);
+
+        // Map entity to response DTO
+        return productMapper.MapProductToProductResponseDTO(products);
     }
 
     @Override

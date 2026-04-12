@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: productService
+  config:
+    import: optional:configserver:http://config-server:8888
+
+  rabbitmq:
+    host: rabbitmq_container
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+#    hostname: localhost
+    prefer-ip-address: true
+
+logging:
+  file:
+    name: microservices_logs/productService.log
+  level:
+    root: INFO
+    org.springframework.web.client: DEBUG
